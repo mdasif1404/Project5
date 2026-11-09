@@ -2,14 +2,17 @@ import express from "express";
 import sampleRouter from "./routes/sampleRoute.js";
 import dotenv from 'dotenv';
 import { connectToDB } from "./db.js";
+import userRoutes from "./routes/userRoutes.js";
+import { logger } from "./middlewares.js";
 
 const app = express();
 dotenv.config()
 app.use(express.json());
-console.log();
+app.use(logger);
 const port = process.env.PORT || 3000
 const db_url = process.env.DB_URL
 app.use('/s', sampleRouter)
+app.use('/users', userRoutes)
 
 connectToDB(db_url).then(()=>{
     app.listen(port, ()=>{
