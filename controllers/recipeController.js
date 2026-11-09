@@ -13,10 +13,11 @@ export const addRecipe = async (req, res) => {
         let recipeRecord = new Recipe({
             title,
             description,
-            ingredients,
+            ingredients: ingredients.split(", "),
             author: req.user.id
         });
-
+        console.log(req.user);
+        
         let {_id} = await recipeRecord.save();
 
         res.status(201).json({

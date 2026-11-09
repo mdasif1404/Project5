@@ -24,16 +24,12 @@ export const loginUser = async (req, res) => {
             });
         }
 
-        let token = await jwt.sign({name: user.name, email: user.email, age: user.age}, "ABCDE", {expiresIn: '10m'})
+        let token = await jwt.sign({name: user.name, email: user.email, id: user._id}, "ABCDE", {expiresIn: '10m'})
         console.log(token);
         
         res.status(200).json({
             message: "Login Successful",
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email
-            }
+            token
         });
 
     } catch (err) {
@@ -49,7 +45,7 @@ export const addUser = async (req, res) => {
 
     try {
         let userExist = await userModel.find({email: email}).select("-password")
-        if(userExist){
+        if(!userExist){
             let err = new Error("User already Exists") 
             throw err;
         }
